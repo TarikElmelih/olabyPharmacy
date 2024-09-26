@@ -1,3 +1,5 @@
+# This workflow will deploy the website to cPanel using FTP-Deploy-Action
+
 name: Publish Website to cPanel
 
 on:
