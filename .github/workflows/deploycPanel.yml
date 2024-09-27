@@ -1,6 +1,6 @@
 # This workflow will deploy the website to cPanel using FTP-Deploy-Action
 
-name: Publish Website to cPanel
+name: Deploy to FTP server
 
 on:
   push:
@@ -8,16 +8,18 @@ on:
       - main
 
 jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+  ftp-deploy:
+    name: FTP Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
-      - name: Deploy to cPanel
-        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Upload via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          ftp-server: ${{ secrets.FTP_SERVER }}
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./ # Specify the local directory to upload
-          git-ftp-args: --insecure # Add any additional git-ftp arguments if needed
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /public_html/
