@@ -75,13 +75,10 @@ class SubCategoryController extends Controller
 
        public function showProducts($id)
        {   
-        $subcategory = Sub_Category::with('products')->findOrFail($id);
+        $subcategory = Sub_Category::findOrFail($id);
+        $products = $subcategory->products()->paginate(9); // Change this line
+        $all_categories = Category::all(); // Fetch all categories for the sidebar
 
-        // To check the subcategory and products
-        // dd($subcategory);
-         $products = $subcategory->products;
-         $all_categories = Category::all(); // Fetch all categories for the sidebar
-
-            return view('front.test', compact( 'subcategory','products','all_categories'));
+        return view('front.test', compact('subcategory', 'products', 'all_categories'));
        }
 }

@@ -1,97 +1,84 @@
 <?php
+// Admin Controllers
+use App\Http\Controllers\Admin\{
+    AdminController,
+    BrandController,
+    CategoryController,
+    ContentController,
+    PatientFollowUpScheduleController,
+    PrescriptionController,
+    ProductController,
+    ScientificNameController,
+    SlideController
+};
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\SlideController;
-use App\Http\Controllers\Admin\ScientificNameController;
+// User Controllers
+use App\Http\Controllers\{
+    CartController,
+    ProfileController,
+    SubCategoryController,
+    User\UserController,
+    UserProductController
+};
 
-use App\Http\Controllers\SubCategoryController;
-use App\Http\Controllers\PatientFollowUpScheduleController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\ContentController;
-use App\Http\Controllers\UserProductController;
-use App\Http\Controllers\PrescriptionController;
-use App\Http\Middleware\UserMiddleware;
-use App\Http\Middleware\AdminMiddleware;
+// Middlewares
+use App\Http\Middleware\{
+    AdminMiddleware,
+    UserMiddleware
+};
+
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Profile;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Brand;
-use App\Models\Content;
-use App\Models\Slide;
+use App\Models\{
+    User,
+    Product,
+    Category,
+    Brand,
+    Slide,
+    Content
+};
 
 
 /* Front Routes */
-Route::get('/', function () {
+Route::middleware('optimizeImages')->group(function () {
+    Route::get('/', function () {
+        $users = User::all();
+        $products = Product::limit(4)->get();
+        $categories = Category::limit(4)->get();
+        $brands = Brand::all();
+        $slides = Slide::all();
+        return view('front/home', compact('users', 'products', 'categories', 'brands', 'slides'));
+    });
 
-     // Fetching data from the models
-    $users = User::all();
-    $products = Product::limit(4)->get();
-    $categories = Category::limit(4)->get();
-    $brands = Brand::all();
-    $slides = Slide::all();
-     // Passing data to the view using compact
-     return view('front/home', compact('users',  'products', 'categories', 'brands', 'slides'));
-
-});
-// In your web.php
-Route::get('/search-products', [ProductController::class, 'searchProducts'])->name('search.products');
-
-Route::get('/categories', [CategoryController::class, 'showAllCategories'])->name('categories.index');
-
-
-Route::get('/category/products/{id}', [CategoryController::class, 'showProducts'])->name('category.products');
-Route::get('/subcategory/products/{id}', [SubCategoryController::class, 'showProducts'])->name('subcategory.products');
-
-Route::get('/brand/products/{id}', [BrandController::class, 'showProducts'])->name('brand.products');
-Route::get('/ScientificName/products/{id}', [ScientificNameController::class, 'showProducts'])->name('scientificName.products');
-
-
-
-Route::get('/cart', function () {
-    return view('front.cart');
-})->name('cart');
-
-Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
-Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
-
-
-Route::get('/product', function () {
-    $products = Product::paginate(25);
-    $categories = Category::all();
-    $brands = Brand::all();
-    return view('front.product',compact('products', 'categories', 'brands'));
-
+    Route::get('/search-products', [ProductController::class, 'searchProducts'])->name('search.products');
+    Route::get('/categories', [CategoryController::class, 'showAllCategories'])->name('categories.index');
+    Route::get('/category/products/{id}', [CategoryController::class, 'showProducts'])->name('category.products');
+    Route::get('/subcategory/products/{id}', [SubCategoryController::class, 'showProducts'])->name('subcategory.products');
+    Route::get('/brand/products/{id}', [BrandController::class, 'showProducts'])->name('brand.products');
+    Route::get('/ScientificName/products/{id}', [ScientificNameController::class, 'showProducts'])->name('scientificName.products');
+    Route::get('/cart', function () {
+        return view('front.cart');
+    })->name('cart');
+    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::get('/product', function () {
+        $products = Product::paginate(25);
+        $categories = Category::all();
+        $brands = Brand::all();
+        return view('front.product', compact('products', 'categories', 'brands'));
     })->name('product');
+    Route::get('/prescription', function () {
+        return view('front.prescription');
+    })->name('prescription');
+    Route::get('/about', function () {
+        $contents = Content::first();
+        return view('front.about', compact('contents'));
+    })->name('about');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/product/{id}', [UserProductController::class, 'show'])->name('product.show');
+    Route::get('/prescription', [PrescriptionController::class, 'create'])->name('prescription.create');
+    Route::post('/prescription/add', [PrescriptionController::class, 'store'])->name('prescription.store');
+});
 
-
-Route::get('/prescription', function () {
-
-    return view('front.prescription');
-
-})->name('prescription');
-
-Route::get('/about', function () {
-    $contents = Content::first();
-    return view('front.about',compact('contents'));
-
-})->name('about');
-
-
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-
-Route::get('/product/{id}', [UserProductController::class, 'show'])->name('product.show');
-
-
-Route::get('/prescription', [PrescriptionController::class, 'create'])->name('prescription.create');
-Route::post('/prescription/add', [PrescriptionController::class, 'store'])->name('prescription.store');
 /* End Front Routes */
 
 
@@ -216,11 +203,11 @@ Route::middleware(['auth', 'AdminMiddleware'])->group(function() {
 
     //Slide route
     Route::get('/admin/slides', [SlideController::class, 'index'])->name('admin.slides.index');
-Route::get('/admin/slides/create', [SlideController::class, 'create'])->name('admin.slides.create');
-Route::post('/admin/slides', [SlideController::class, 'store'])->name('admin.slides.store');
-Route::get('/admin/slides/{slide}', [SlideController::class, 'show'])->name('admin.slides.show');
-Route::get('/admin/slides/{slide}/edit', [SlideController::class, 'edit'])->name('admin.slides.edit');
-Route::put('/admin/slides/{slide}', [SlideController::class, 'update'])->name('admin.slides.update');
-Route::delete('/admin/slides/{slide}', [SlideController::class, 'destroy'])->name('admin.slides.destroy');
+    Route::get('/admin/slides/create', [SlideController::class, 'create'])->name('admin.slides.create');
+    Route::post('/admin/slides', [SlideController::class, 'store'])->name('admin.slides.store');
+    Route::get('/admin/slides/{slide}', [SlideController::class, 'show'])->name('admin.slides.show');
+    Route::get('/admin/slides/{slide}/edit', [SlideController::class, 'edit'])->name('admin.slides.edit');
+    Route::put('/admin/slides/{slide}', [SlideController::class, 'update'])->name('admin.slides.update');
+    Route::delete('/admin/slides/{slide}', [SlideController::class, 'destroy'])->name('admin.slides.destroy');
 
 });

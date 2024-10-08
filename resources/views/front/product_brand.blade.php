@@ -70,8 +70,8 @@
                                     <p class="">{{ $product->short_description }}</p>
                                     <!-- Product price-->
                                      <div class="product-price flex items-center">
-                    <span class="current-price">{{$product->adjusted_discount_price}} ₺</span>
-                    <del class="original-price ml-2">{{$product->adjusted_price}} ₺</del>
+                    <span class="current-price">{{number_format($product->adjusted_discount_price, 1)}} ₺</span>
+                    <del class="original-price ml-2">{{number_format($product->adjusted_price, 1)}} ₺</del>
                 </div>
                                 </div>
                             </div>

@@ -68,7 +68,7 @@
                           </i>
                           <div>
                               <h4>رقم الهاتف</h4>
-                              <a href="callto:+{{ $contents->phone }}">{{ $contents->phone }}</a>
+                              <a href="https://wa.me/{{ $contents->phone }}">{{ $contents->phone }}</a>
                           </div>
                       </div>
                   </div>
@@ -102,7 +102,7 @@
   <div class="footer-bottom">
       <div class="container">
           <div class="footer-bottom-text">
-              <p>Copyright © 2024 جميع الحقوق محفوظة , برمجة طارق المليح</p>
+              <p>Copyright © 2024 all rights reserved , Tarik Elmelih</p>
               
           </div>
       </div>

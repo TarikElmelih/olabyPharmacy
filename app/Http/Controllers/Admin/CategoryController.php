@@ -23,8 +23,9 @@ class CategoryController extends Controller
     {   
         $all_categories = Category::all();
         $category = Category::find($id);
-        $products = $category->products; // Assuming a Category has many Products
-        return view('front.product_cate', compact('category', 'products','all_categories'));
+        $products = $category->products()->paginate(9);
+        $subcategories = $category->subCategories; // Add this line to fetch subcategories
+        return view('front.product_cate', compact('category', 'products', 'all_categories', 'subcategories'));
     }
 
     public function showAllCategories()

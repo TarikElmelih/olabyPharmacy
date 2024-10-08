@@ -23,7 +23,6 @@
     <!-- responsive -->
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('assets/js/preloader.js') }}"></script>
 </head>
 <style>
     /*cart*/
@@ -53,18 +52,7 @@
         }
 </style>
 <body>
-      
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-    </div>
-    <!-- preloader end -->
-
+  
     @include('front.layout.header')
      <div class="donation">
         <a href="/cart" class="pr-cart">

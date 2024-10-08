@@ -18,7 +18,7 @@ class ScientificNameController extends Controller
     {   
         $all_ScientificNames = ScientificName::all();
         $ScientificName = ScientificName::find($id);
-        $products = $ScientificName->products; // Assuming a ScientificName has many Products
+        $products = $ScientificName->products()->paginate(9); // Assuming a ScientificName has many Products
         return view('front.product_scientific_name', compact('ScientificName', 'products','all_ScientificNames'));
     }
     public function create()

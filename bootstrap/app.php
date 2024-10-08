@@ -16,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'UserMiddleware' => UserMiddleware::class,
-            'AdminMiddleware' => AdminMiddleware::class
+            'AdminMiddleware' => AdminMiddleware::class,
+            'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

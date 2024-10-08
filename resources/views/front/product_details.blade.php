@@ -20,7 +20,7 @@
             <div class="col-lg-6">
                 <div class="product-info">
                     <div class="d-flex align-items-center">
-                        <h6><span>{{ $product->in_stock ? 'متوفر' : 'غير متوفر' }}</span></h6>
+                        <h6><span>متوفر</span></h6>
                     </div>
                     <h2>{{ $product->name }}</h2>
                      <li><a href="/ScientificName/products/{{ $product->ScientificName->id }}">{{ $product->ScientificName->name }}</a></li>
@@ -35,21 +35,21 @@
                                     <del>
                                         <span class="woocommerce-Price-amount">
                                             <bdi>
-                                                <span class="woocommerce-Price-currencySymbol">₺</span>{{$product->adjusted_price}} 
+                                                <span class="woocommerce-Price-currencySymbol">₺</span>{{ number_format($product->adjusted_price, 1) }} 
                                             </bdi>
                                         </span>
                                     </del>
                                     <ins>
                                         <span class="woocommerce-Price-amount amount">
                                             <bdi>
-                                                <span class="woocommerce-Price-currencySymbol">₺</span>{{$product->adjusted_discount_price}} 
+                                                <span class="woocommerce-Price-currencySymbol">₺</span>{{ number_format($product->adjusted_discount_price, 1) }}
                                             </bdi>
                                         </span>
                                     </ins>
                                 @else
                                     <span class="woocommerce-Price-amount amount">
                                         <bdi>
-                                            <span class="woocommerce-Price-currencySymbol">₺</span>{{ $product->price }}
+                                            <span class="woocommerce-Price-currencySymbol">₺</span>{{ number_format($product->price, 1) }}
                                         </bdi>
                                     </span>
                                 @endif

@@ -21,6 +21,8 @@
                         <li><a href="{{ route('admin.categories.index') }}">قائمة التصنيفات</a></li>
                         <li><a href="{{ route('admin.subcategories.index') }}">قائمة التصنيفات الفرعية</a></li>
                         <li><a href="{{ route('admin.categories.create') }}">لإضافة تصنيف</a></li>
+                        <li><a href="{{ route('admin.scientific_names.index') }}">قائمة بالاسم العلمي</a></li>
+                        <li><a href="{{ route('admin.scientific_names.create') }}">إضافة بالاسم العلمي</a></li>
                         <li><a href="{{ route('admin.brands.index') }}">قائمة براند</a></li>
                         <li><a href="{{ route('admin.brands.create') }}">إضافة براند</a></li>
                     </ul>

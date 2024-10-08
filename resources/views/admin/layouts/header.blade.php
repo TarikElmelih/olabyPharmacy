@@ -20,6 +20,7 @@
 
     <ul class="nav user-menu">
         <li class="nav-item">
+            <a href="{{ url('/') }}" class="btn btn-primary">الرجوع الى الموقع</a>
             <div class="top-nav-search">
                 {{-- <a href="javascript:void(0);" class="responsive-search">
                     <i class="fa fa-search"></i>

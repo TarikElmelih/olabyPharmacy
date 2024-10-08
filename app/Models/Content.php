@@ -30,8 +30,8 @@ class Content extends Model
         'facebook_link',
         'whatsapp_link',
         'instagram_link',
-        'desktop_about_image', // Updated column name
-        'mobile_about_image',  // Updated column name
+        'desktop_about_image',
+        'mobile_about_image',
         'exchange_number'
     ];
     

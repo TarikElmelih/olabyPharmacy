@@ -131,7 +131,9 @@
         </form>
     </div>
 </section>
-
+@php
+                $contents = \App\Models\Content::first();
+            @endphp
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const fixedDeliveryCost = 20; // Fixed delivery cost
@@ -204,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const total = document.querySelector('.Total .woocommerce-Price-amount').textContent;
         const selectedOption = deliveryOptionSelect.selectedOptions[0].text;
         const message = `السلام عليكم ورحمة الله وبركاته \n أريد هذا الطلب:\n\n${cartItems.join('\n')}\n\nالدفع عن طريق : ${selectedOption}\n\nTotal: ${total}`;
-        const phoneNumber = '+994401680201'; // Replace with your WhatsApp number
+        const phoneNumber = '{{ $contents->phone }}'; // Replace with your WhatsApp number
         const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
         window.open(whatsappURL, '_blank');

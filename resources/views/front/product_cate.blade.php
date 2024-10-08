@@ -1,26 +1,47 @@
 @extends('front.layout.app')
 
-
 @section('content')
-
 
 <!-- Section-->
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
-       
-            <!-- Products -->
+        <!-- Category Details -->
+        <div class="row">
+            <!-- Category Image and Name -->
             <div class="col-lg-9">
-                <div class="row gx-3 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center">
-                    @foreach ($products as $product)
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                             <a href="{{ route('product.show', $product->id) }}">
-                                
-                            <img class="card-img-top" src="{{ asset('images/products/' . $product->image) }}" alt="..." />
-                            </a>
-                            <!-- Product details-->
-                              <a href="{{ route('product.show', $product->id) }}">
+                <div class="category-header text-center mb-4">
+                    <!-- Category Image -->
+                    <img class="category-image img-fluid mb-3" src="{{ asset('images/categories/' . $category->image) }}" alt="{{ $category->name }}" style="width: 600px; height: 300px; object-fit: cover;">
+                    <!-- Category Name -->
+                    <h1 class="category-title">{{ $category->name }}</h1>
+                </div>
+            </div>
+
+            <!-- Subcategories Widget (Aside) -->
+            <div class="col-lg-3" style="direction: rtl;">
+                <aside class="subcategories-widget mb-5" style="direction: rtl;">
+                    <h4 class="widget-title" style="direction: rtl;">التصنيفات الفرعية</h4>
+                    <ul class="list-group">
+                        @foreach ($subcategories as $subcategory)
+                        <li class="list-group-item" style="text-align: right;"><a href="/subcategory/products/{{ $subcategory->id }}">{{ $subcategory->name }}</a></li>
+                        @endforeach
+                    </ul>
+                </aside>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="col-lg-9 mx-auto">
+            <div class="row gx-3 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center">
+                @foreach ($products as $product)
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <a href="{{ route('product.show', $product->id) }}">
+                            <img class="card-img-top" src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}" />
+                        </a>
+                        <!-- Product details-->
+                        <a href="{{ route('product.show', $product->id) }}">
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
@@ -29,30 +50,68 @@
                                     <p class="product-brand"><a href="/category/products/{{$product->category->id}}">{{ $product->category->name }}</a></p>
                                     <p class="">{{ $product->short_description }}</p>
                                     <!-- Product price-->
-                                     <div class="product-price flex items-center">
-                    <span class="current-price">{{$product->adjusted_discount_price}} ₺</span>
-                    <del class="original-price ml-2">{{$product->adjusted_price}} ₺</del>
-                </div> 
+                                    <div class="product-price flex items-center">
+                                        <span class="current-price">{{number_format($product->adjusted_discount_price, 1)}} ₺</span>
+                                        <del class="original-price ml-2">{{number_format($product->adjusted_price, 1)}} ₺</del>
+                                    </div> 
                                 </div>
                             </div>
-                            </a>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <form action="{{ route('cart.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button type="submit" class="btn btn-outline-dark mt-auto">اضافة للسلة </button>
-                                    </form>
-                                </div>
+                        </a>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <form action="{{ route('cart.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <button type="submit" class="btn btn-outline-dark mt-auto">Add to Cart</button>
+                                </form>
                             </div>
-                            
                         </div>
                     </div>
-                    @endforeach
                 </div>
+                @endforeach
             </div>
+            
+            <!-- Pagination links -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center flex-wrap">
+                    @if ($products->onFirstPage())
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                        <li class="page-item {{ $page == $products->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+
+                    @if ($products->hasMorePages())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $products->nextPageUrl() }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </span>
+                        </li>
+                    @endif
+                </ul>
+            </nav>
         </div>
     </div>
 </section>
+
 @endsection

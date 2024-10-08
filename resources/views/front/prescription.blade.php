@@ -44,7 +44,9 @@
         <button type="button" class="submit-btn btn btn-primary" onclick="sendImage()">إرسال صورة</button>
     </form>
 </div>
-
+@php
+    $contact = App\Models\Content::first();
+@endphp
 <script>
     function sendToWhatsApp(event) {
         event.preventDefault();
@@ -57,17 +59,16 @@
             `*وصف الدواء:* ${drugDescription}\n\n` +
             `*يرجى إرفاق صورة الدواء في الرسالة*`;
 
-        const whatsappUrl = `https://wa.me/+905537098748?text=${encodeURIComponent(message)}`;
+        const phone = "{{$contact->phone}}";
+        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
         window.open(whatsappUrl, '_blank');
     }
 
     function sendImage() {
-         const message = `*يرجى إرفاق صورة الدواء في الرسالة`;
-        
-         
-         
-         const whatsappUrl = `https://wa.me/+905537098748?text=${encodeURIComponent(message)}`;
+        const message = `*يرجى إرفاق صورة الدواء في الرسالة*`;
+        const phone = "{{$contact->phone}}";
+        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
         window.open(whatsappUrl, '_blank');
     }

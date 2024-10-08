@@ -341,8 +341,8 @@
     <div class="slider-hero owl-carousel">
         @foreach($slides as $slide)
         <div class="item hero-section three" 
-             data-desktop-image="{{ asset('images/slides/' . $slide->desktop_image) }}" 
-             data-mobile-image="{{ asset('images/slides/' . $slide->mobile_image) }}">
+             data-desktop-image="{{ asset('images/slides/' . $slide->desktop_image) }}?quality=50" 
+             data-mobile-image="{{ asset('images/slides/' . $slide->mobile_image) }}?quality=50">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -459,8 +459,8 @@
                 <a href="/category/products/{{$product->category->id}}" class="product-category">{{$product->category->name}}</a>
                 <div class="product-name font-bold">{{$product->name}}</div>
                 <div class="product-price flex items-center">
-                    <span class="current-price">{{$product->adjusted_discount_price}} ₺</span>
-                    <del class="original-price ml-2">{{$product->adjusted_price}} ₺</del>
+                    <span class="current-price">{{number_format($product->adjusted_discount_price, 1)}} ₺</span>
+                    <del class="original-price ml-2">{{number_format($product->adjusted_price, 1)}} ₺</del>
                 </div>
                 <form action="{{ route('cart.store') }}" method="POST" class="add-to-cart-form">
                     @csrf
